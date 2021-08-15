@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ES6 新增字符串api | 拙慕</title>
+  <title>ES6 对象新增方法 | 拙慕</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
     <link rel="shortcut icon" href="/favicon.png">
@@ -49,10 +49,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-post2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-ObjectNewFun" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/post2/" class="article-date">
-  <time class="dt-published" datetime="2021-08-08T13:39:10.000Z" itemprop="datePublished">2021-08-08</time>
+    <a href="/ObjectNewFun/" class="article-date">
+  <time class="dt-published" datetime="2021-08-15T15:38:39.000Z" itemprop="datePublished">2021-08-15</time>
 </a>
     
   <div class="article-category">
@@ -67,7 +67,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      ES6 新增字符串api
+      ES6 对象新增方法
     </h1>
   
 
@@ -75,69 +75,61 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>本文针对ES6 新增的 api 做了整理，参照 <a target="_blank" rel="noopener" href="https://es6.ruanyifeng.com/#docs/string-methods">https://es6.ruanyifeng.com/#docs/string-methods</a></p>
-</blockquote>
-<h2 id="includes-startsWith-endsWith"><a href="#includes-startsWith-endsWith" class="headerlink" title="includes(), startsWith(), endsWith()"></a>includes(), startsWith(), endsWith()</h2><ul>
-<li>includes()：返回布尔值，表示是否找到了参数字符串。</li>
-<li>startsWith()：返回布尔值，表示参数字符串是否在原字符串的头部。</li>
-<li>endsWith()：返回布尔值，表示参数字符串是否在原字符串的尾部。</li>
-<li>这三个方法都支持第二个参数，表示开始搜索的位置。</li>
+        <h2 id="Objec-is"><a href="#Objec-is" class="headerlink" title="Objec.is()"></a>Objec.is()</h2><ul>
+<li>用来比较两个值是否严格相等，与严格比较运算符（===）的行为基本一致。</li>
+<li>一是+0不等于-0，二是NaN等于自身。</li>
 </ul>
-<pre><code>   let str = &#39;Hello world!&#39;;
-
-   str.startsWith(&#39;world&#39;, 6) // true
-   str.endsWith(&#39;Hello&#39;, 5) // true
-   str.includes(&#39;Hello&#39;, 6) // false
+<pre><code>    Object.is(&#39;foo&#39;, &#39;foo&#39;)
+    // true
+    Object.is(&#123;&#125;, &#123;&#125;)
+    // false
 </code></pre>
-<h2 id="repeat"><a href="#repeat" class="headerlink" title="repeat()"></a>repeat()</h2><ul>
-<li><code>repeat</code> 方法返回一个新字符串，表示将原字符串重复n次;</li>
-<li>参数如果是小数，会被取整。</li>
-<li>如果 <code>repeat</code> 的参数是负数或者 <code>Infinity</code> ，会报错;</li>
-<li>如果参数是 0 到-1 之间的小数，则等同于 0，这是因为会先进行取整运算;</li>
-<li>参数 <code>NaN</code> 等同于 0;</li>
-<li><code>repeat</code> 的参数是字符串，则会先转换成数字;</li>
+<h2 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign()"></a>Object.assign()</h2><ul>
+<li>用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）;</li>
+<li>第一个参数是目标对象，后面的参数都是源对象;</li>
+<li>目标对象与源对象有同名属性，或多个源对象有同名属性，则后面的属性会覆盖前面的属性;</li>
+<li>只有一个参数，Object.assign()会直接返回该参数;</li>
+<li>该参数不是对象，则会先转成对象，然后返回;</li>
+<li>undefined 和 null 无法转成对象，所以如果它们作为参数，就会报错;反之，不在首参则不会报错（包括其他类型：即数值、字符串和布尔值）;但是，除了字符串会以数组形式，拷贝入目标对象，其他值都不会产生效果;</li>
 </ul>
-<pre><code>   &#39;hello&#39;.repeat(2) // &quot;hellohello&quot;
+<pre><code>    const obj = Object.assign(&#123;&#125;, v1, v2, v3);
+    console.log(obj);
 </code></pre>
-<h2 id="padStart-，padEnd"><a href="#padStart-，padEnd" class="headerlink" title="padStart()，padEnd()"></a>padStart()，padEnd()</h2><ul>
-<li><code>padStart()</code> 用于头部补全,常见用途是为数值补全指定位数;</li>
-<li><code>padEnd()</code> 用于尾部补全;</li>
-<li><code>padStart()</code> 和 <code>padEnd()</code> 一共接受两个参数，第一个参数是字符串补全生效的最大长度，第二个参数是用来补全的字符串;</li>
-<li>如果原字符串的长度，等于或大于最大长度，则字符串补全不生效，返回原字符串。</li>
-<li>如果用来补全的字符串与原字符串，两者的长度之和超过了最大长度，则会截去超出位数的补全字符串;</li>
-<li>如果省略第二个参数，默认使用空格补全长度;</li>
+<h2 id="Object-keys-，Object-values"><a href="#Object-keys-，Object-values" class="headerlink" title="Object.keys()，Object.values()"></a>Object.keys()，Object.values()</h2><h3 id="Object-keys"><a href="#Object-keys" class="headerlink" title="Object.keys()"></a>Object.keys()</h3><ul>
+<li>返回对象自身的（不含继承的）所有可遍历（enumerable）属性的键名的一个数组。</li>
 </ul>
-<pre><code>    &#39;1&#39;.padStart(10, &#39;0&#39;) // &quot;0000000001&quot;
-    &#39;x&#39;.padEnd(4, &#39;ab&#39;) // &#39;xaba&#39;
+<pre><code>    var obj = &#123; foo: &#39;bar&#39;, baz: 42 &#125;;
+    Object.keys(obj)
+    // [&quot;foo&quot;, &quot;baz&quot;]
 </code></pre>
-<h2 id="trimStart-，trimEnd"><a href="#trimStart-，trimEnd" class="headerlink" title="trimStart()，trimEnd()"></a>trimStart()，trimEnd()</h2><ul>
-<li>行为与 <code>trim()</code> 一致，<code>trimStart()</code> 消除字符串头部的空格，<code>trimEnd()</code> 消除尾部的空格;</li>
-<li>返回新字符串，不会修改原始字符串;</li>
+<h3 id="Object-values"><a href="#Object-values" class="headerlink" title="Object.values()"></a>Object.values()</h3><ul>
+<li>返回对象自身的（不含继承的）所有可遍历（enumerable）属性的值的一个数组。</li>
 </ul>
-<pre><code>    const s = &#39;  abc  &#39;;
-
-    s.trim() // &quot;abc&quot;
-    s.trimStart() // &quot;abc  &quot;
-    s.trimEnd() // &quot;  abc&quot;
+<pre><code>    const obj = &#123; foo: &#39;bar&#39;, baz: 42 &#125;;
+    Object.values(obj)
+    // [&quot;bar&quot;, 42]
 </code></pre>
-<h2 id="matchAll"><a href="#matchAll" class="headerlink" title="matchAll()"></a>matchAll()</h2><ul>
-<li>返回一个正则表达式在当前字符串的所有匹配;</li>
+<h2 id="Object-entries-Object-fromEntries"><a href="#Object-entries-Object-fromEntries" class="headerlink" title="Object.entries(),Object.fromEntries()"></a>Object.entries(),Object.fromEntries()</h2><h3 id="Object-entries"><a href="#Object-entries" class="headerlink" title="Object.entries()"></a>Object.entries()</h3><ul>
+<li>返回对象自身的（不含继承的）所有可遍历（enumerable）属性的键值对数组。</li>
 </ul>
-<h2 id="replaceAll"><a href="#replaceAll" class="headerlink" title="replaceAll()"></a>replaceAll()</h2><ul>
-<li><code>replaceAll()</code>方法，可以一次性替换所有匹配;</li>
-<li>第二个参是一个字符串，表示替换的文本;</li>
+<pre><code>    const obj = &#123; foo: &#39;bar&#39;, baz: 42 &#125;;
+    Object.entries(obj)
+    // [ [&quot;foo&quot;, &quot;bar&quot;], [&quot;baz&quot;, 42] ]
+</code></pre>
+<h3 id="Object-fromEntries"><a href="#Object-fromEntries" class="headerlink" title="Object.fromEntries()"></a>Object.fromEntries()</h3><ul>
+<li>Object.fromEntries()方法是Object.entries()的逆操作，用于将一个键值对数组转为对象。</li>
 </ul>
-<pre><code>    &#39;aabbcc&#39;.replace(/b/g, &#39;_&#39;)
-    // 等价于
-    &#39;aabbcc&#39;.replaceAll(&#39;b&#39;, &#39;_&#39;)
-    // &#39;aa__cc&#39;
+<pre><code>    Object.fromEntries([
+    [&#39;foo&#39;, &#39;bar&#39;],
+    [&#39;baz&#39;, 42]
+    ])
+    // &#123; foo: &quot;bar&quot;, baz: 42 &#125;
 </code></pre>
 
       
     </div>
     <footer class="article-footer">
-      <!-- <a data-url="https://apologize514.github.io/post2/" data-id="cks3a9t640000pcjaeufvezu5" data-title="ES6 新增字符串api" class="article-share-link">分享</a> -->
+      <!-- <a data-url="https://apologize514.github.io/ObjectNewFun/" data-id="cksdeal6l0000t8ja79vv9vir" data-title="ES6 对象新增方法" class="article-share-link">分享</a> -->
       
       
       
@@ -149,19 +141,10 @@
     
 <nav id="article-nav">
   
-    <a href="/ObjectNewFun/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          ES6 对象新增方法
-        
-      </div>
-    </a>
   
-  
-    <a href="/post1/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/post2/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">用原生 js 实现数组扁平化</div>
+      <div class="article-nav-title">ES6 新增字符串api</div>
     </a>
   
 </nav>

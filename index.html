@@ -51,6 +51,100 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ObjectNewFun" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/ObjectNewFun/" class="article-date">
+  <time class="dt-published" datetime="2021-08-15T15:38:39.000Z" itemprop="datePublished">2021-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/ObjectNewFun/">ES6 对象新增方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Objec-is"><a href="#Objec-is" class="headerlink" title="Objec.is()"></a>Objec.is()</h2><ul>
+<li>用来比较两个值是否严格相等，与严格比较运算符（===）的行为基本一致。</li>
+<li>一是+0不等于-0，二是NaN等于自身。</li>
+</ul>
+<pre><code>    Object.is(&#39;foo&#39;, &#39;foo&#39;)
+    // true
+    Object.is(&#123;&#125;, &#123;&#125;)
+    // false
+</code></pre>
+<h2 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign()"></a>Object.assign()</h2><ul>
+<li>用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）;</li>
+<li>第一个参数是目标对象，后面的参数都是源对象;</li>
+<li>目标对象与源对象有同名属性，或多个源对象有同名属性，则后面的属性会覆盖前面的属性;</li>
+<li>只有一个参数，Object.assign()会直接返回该参数;</li>
+<li>该参数不是对象，则会先转成对象，然后返回;</li>
+<li>undefined 和 null 无法转成对象，所以如果它们作为参数，就会报错;反之，不在首参则不会报错（包括其他类型：即数值、字符串和布尔值）;但是，除了字符串会以数组形式，拷贝入目标对象，其他值都不会产生效果;</li>
+</ul>
+<pre><code>    const obj = Object.assign(&#123;&#125;, v1, v2, v3);
+    console.log(obj);
+</code></pre>
+<h2 id="Object-keys-，Object-values"><a href="#Object-keys-，Object-values" class="headerlink" title="Object.keys()，Object.values()"></a>Object.keys()，Object.values()</h2><h3 id="Object-keys"><a href="#Object-keys" class="headerlink" title="Object.keys()"></a>Object.keys()</h3><ul>
+<li>返回对象自身的（不含继承的）所有可遍历（enumerable）属性的键名的一个数组。</li>
+</ul>
+<pre><code>    var obj = &#123; foo: &#39;bar&#39;, baz: 42 &#125;;
+    Object.keys(obj)
+    // [&quot;foo&quot;, &quot;baz&quot;]
+</code></pre>
+<h3 id="Object-values"><a href="#Object-values" class="headerlink" title="Object.values()"></a>Object.values()</h3><ul>
+<li>返回对象自身的（不含继承的）所有可遍历（enumerable）属性的值的一个数组。</li>
+</ul>
+<pre><code>    const obj = &#123; foo: &#39;bar&#39;, baz: 42 &#125;;
+    Object.values(obj)
+    // [&quot;bar&quot;, 42]
+</code></pre>
+<h2 id="Object-entries-Object-fromEntries"><a href="#Object-entries-Object-fromEntries" class="headerlink" title="Object.entries(),Object.fromEntries()"></a>Object.entries(),Object.fromEntries()</h2><h3 id="Object-entries"><a href="#Object-entries" class="headerlink" title="Object.entries()"></a>Object.entries()</h3><ul>
+<li>返回对象自身的（不含继承的）所有可遍历（enumerable）属性的键值对数组。</li>
+</ul>
+<pre><code>    const obj = &#123; foo: &#39;bar&#39;, baz: 42 &#125;;
+    Object.entries(obj)
+    // [ [&quot;foo&quot;, &quot;bar&quot;], [&quot;baz&quot;, 42] ]
+</code></pre>
+<h3 id="Object-fromEntries"><a href="#Object-fromEntries" class="headerlink" title="Object.fromEntries()"></a>Object.fromEntries()</h3><ul>
+<li>Object.fromEntries()方法是Object.entries()的逆操作，用于将一个键值对数组转为对象。</li>
+</ul>
+<pre><code>    Object.fromEntries([
+    [&#39;foo&#39;, &#39;bar&#39;],
+    [&#39;baz&#39;, 42]
+    ])
+    // &#123; foo: &quot;bar&quot;, baz: 42 &#125;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <!-- <a data-url="https://apologize514.github.io/ObjectNewFun/" data-id="cksdeal6l0000t8ja79vv9vir" data-title="ES6 对象新增方法" class="article-share-link">分享</a> -->
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ECMAScript-6/" rel="tag">ECMAScript 6</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-post2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/post2/" class="article-date">
@@ -653,6 +747,10 @@ moudle.exports = function(source)&#123;
       <ul>
         
           <li>
+            <a href="/ObjectNewFun/">ES6 对象新增方法</a>
+          </li>
+        
+          <li>
             <a href="/post2/">ES6 新增字符串api</a>
           </li>
         
@@ -666,10 +764,6 @@ moudle.exports = function(source)&#123;
         
           <li>
             <a href="/ArrayApi/">常用数组api</a>
-          </li>
-        
-          <li>
-            <a href="/plugin/">自定义 plugin 和 loader</a>
           </li>
         
       </ul>
