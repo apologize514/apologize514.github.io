@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>用原生 js 实现数组扁平化 | 拙慕</title>
+  <title>关于 this | 拙慕</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
     <link rel="shortcut icon" href="/favicon.png">
@@ -49,10 +49,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-post1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-this指向" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/post1/" class="article-date">
-  <time class="dt-published" datetime="2021-07-25T05:31:39.000Z" itemprop="datePublished">2021-07-25</time>
+    <a href="/this%E6%8C%87%E5%90%91/" class="article-date">
+  <time class="dt-published" datetime="2021-08-22T11:29:04.000Z" itemprop="datePublished">2021-08-22</time>
 </a>
     
   <div class="article-category">
@@ -67,7 +67,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      用原生 js 实现数组扁平化
+      关于 this
     </h1>
   
 
@@ -75,52 +75,94 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>数组扁平化：[1, 3, [5, 2], [2, 3, [4, 5]]]——-&gt;[1, 3, 5, 2, 2, 3, 4, 5]<br> /<em>实现一：递归</em>/</p>
-<pre><code class="javascript">function flatArray(arr)&#123;
-    var result = [];
-    for(var i=0; i&lt;arr.length; i++)&#123;
-        if(Array.isArray(arr[i]))&#123;
-            result = result.concat(flatArray(arr[i]));
-        &#125;else&#123;
-            result.push(arr[i]);
-        &#125;
+        <h2 id="关于-this"><a href="#关于-this" class="headerlink" title="关于 this"></a>关于 this</h2><p>相信初学者在刚开始学习 this 的时候都听过这样一句话：谁调用它，this就指向谁。因为在一些情况下，这样理解也还算说得通。</p>
+<p>首先我们需要明确一点的就是: this 的指向，是在函数调用的时候确定的，在函数执行过程中，this 一旦被确定，就不可更改了。</p>
+<h2 id="全局对象-this"><a href="#全局对象-this" class="headerlink" title="全局对象 this"></a>全局对象 this</h2><p>全局环境中的 this，指向它本身</p>
+<pre><code>    // 通过this绑定到全局对象
+    this.a2 = 20;
+
+    // 通过声明绑定到变量对象，但在全局环境中，变量对象就是它自身
+    var a1 = 10;
+
+    // 仅仅只有赋值操作，标识符会隐式绑定到全局对象: var a3 = undefined;a3 = 30
+    a3 = 30;
+</code></pre>
+<h2 id="函数中的-this"><a href="#函数中的-this" class="headerlink" title="函数中的 this"></a>函数中的 this</h2><ul>
+<li>在一个函数上下文中，this由调用者提供，由调用函数的方式来决定。</li>
+<li>如果调用者函数，被某一个对象所拥有，那么该函数在调用时，内部的this指向该对象。</li>
+<li>如果函数独立调用，那么该函数内部的this，则指向undefined(非严格模式中，this 指向 undefined 时自动指向 全局对象)。</li>
+</ul>
+<p>来看看下面两个代码段，更深入的了解 this</p>
+<ul>
+<li>demo1 </li>
+</ul>
+<pre><code>    var a = 20;
+    var foo = &#123;
+    a: 10,
+    getA: function () &#123;
+        return this.a;
     &#125;
-    return result;
-&#125;
-</code></pre>
-<p>/<em>实现二：如果数组的元素均为数字，可以考虑使用toString()方法或者join()方法，在使用split()方法转化为数组。</em>/</p>
-<pre><code class="javascript">function flatArray2(arr)&#123;
-    //记得最后将得到的字符串元素转化为数字
-    return arr.toString().split(&#39;,&#39;).map( item =&gt; +item);
-    //return arr.join(&#39;,&#39;).split(&#39;,&#39;).map( item =&gt; +item);
-&#125;
-</code></pre>
-<p>/<em>实现三：使用ES6新增的扩展运算符</em>/</p>
-<pre><code class="javascript">/*console.log([].concat(...[1, 2, [3, 4]])); =&gt; [1, 2, 3, 4]
-console.log([].concat(...[1, [2, [3, 4]]])); =&gt;[1, 2, [3, 4]]*/
-function flatArray3(arr)&#123;
-    while(arr.some( item =&gt; Array.isArray(item) ))&#123;
-        arr = [].concat(...arr);
     &#125;
-        return arr;
-&#125;
+    console.log(foo.getA()); // 10
+
+    var test = foo.getA;
+    console.log(test());  // 20
 </code></pre>
-<p>/<em>实现四：reduce</em>/</p>
-<pre><code class="javascript">function flatArray4(arr)&#123;
-    return arr.reduce((result, item) =&gt; &#123;
-        return result.concat(Array.isArray(item) ? flatArray4(item) : item);
-    &#125;, []);
-&#125;
+<p>上述代码段中，getA() 不是独立调用的，而是被 foo 对象调用，因此，this 指向 foo，this.a === 10；test() 作为调用者，尽管他与 foo.getA 相同，但是 test 是做为独立调用的，可以理解为  window.test()，因此 this 指向 window，this.a === 20；</p>
+<ul>
+<li>demo2</li>
+</ul>
+<pre><code>    function foo() &#123;
+    console.log(this.a)
+    &#125;
+
+    function test(fn) &#123;
+    fn(); // 真实调用者，为独立调用
+    &#125;
+
+    var a = 20;
+    var obj = &#123;
+        a: 10,
+        getA: foo
+    &#125;
+
+    test(obj.getA); // 20
 </code></pre>
+<p>上述代码一不留神很容易出错，getA 虽然是被 obj 对象所引用的，但是并没有被调用，而是在 test() 被调用。 test 是独立调用的，this 指向是 window，因此执结果是 20。</p>
+<h2 id="修改-this-指向"><a href="#修改-this-指向" class="headerlink" title="修改 this 指向"></a>修改 this 指向</h2><h3 id="apply-call"><a href="#apply-call" class="headerlink" title="apply/call"></a>apply/call</h3><p>JavaScript 提供了 两个可以修改 this 指向的 api:call 和 apply，这两个 api 除了第二个参数上有区别之外其功能完全相同；</p>
+<pre><code>    function fn(num1, num2) &#123;
+        console.log(this.a + num1 + num2);
+    &#125;
+    var obj = &#123;
+        a: 20
+    &#125;
+
+    fn.call(obj, 100, 10); // 130
+    fn.apply(obj, [20, 10]); // 50
+</code></pre>
+<p>call与apply后面的参数，都是向将要执行的函数传递参数。其中call以一个一个的形式传递，apply以数组的形式传递。</p>
+<h3 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h3><p>es5 中提供了 bind() 也可以修改 this 指向</p>
+<pre><code>var obj = &#123;
+    foo : function()&#123;
+        var fun = function()&#123;
+            console.log(this.baz);
+        &#125;.bind(this);
+        fun();
+    &#125;,
+    baz : &#39;Hello!&#39;
+&#125;
+obj.foo(); //Hello!
+</code></pre>
+<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><p>es6 中提供了箭头函数的方案。</p>
 
       
     </div>
     <footer class="article-footer">
-      <!-- <a data-url="https://apologize514.github.io/post1/" data-id="ckrirlmxn00005gjac97d0pk1" data-title="用原生 js 实现数组扁平化" class="article-share-link">分享</a> -->
+      <!-- <a data-url="https://apologize514.github.io/this%E6%8C%87%E5%90%91/" data-id="cksndmmwa00002cjafm6gf157" data-title="关于 this" class="article-share-link">分享</a> -->
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
 
     </footer>
   </div>
@@ -128,19 +170,10 @@ function flatArray3(arr)&#123;
     
 <nav id="article-nav">
   
-    <a href="/post2/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          ES6 新增字符串api
-        
-      </div>
-    </a>
   
-  
-    <a href="/newBlog/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/ObjectNewFun/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">使用 Hexo 和 GitHub Pages 搭建博客</div>
+      <div class="article-nav-title">ES6 对象新增方法</div>
     </a>
   
 </nav>
